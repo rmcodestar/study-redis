@@ -1,7 +1,9 @@
-package com.study.redis.subscribe;
+package com.study.redis.pubsub.subscribe;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageSubscriber extends MessageListenerAdapter {
     @Getter
-    private ChannelTopic topic = new ChannelTopic("redis-study:channel1");
+    @Autowired
+    @Qualifier("noticeTopic")
+    private ChannelTopic topic;
 
     @Override
     public void onMessage(Message message, @Nullable byte[] pattern) {

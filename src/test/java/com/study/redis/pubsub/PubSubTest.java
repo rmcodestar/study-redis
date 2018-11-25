@@ -1,6 +1,6 @@
 package com.study.redis.pubsub;
 
-import com.study.redis.publish.MessagePublisher;
+import com.study.redis.pubsub.publish.MessagePublisher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

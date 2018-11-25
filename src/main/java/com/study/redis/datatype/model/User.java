@@ -1,4 +1,4 @@
-package com.study.redis.data.model;
+package com.study.redis.datatype.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

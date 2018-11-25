@@ -1,6 +1,6 @@
-package com.study.redis.data.repository;
+package com.study.redis.datatype.repository;
 
-import com.study.redis.data.model.User;
+import com.study.redis.datatype.model.User;
 import org.springframework.data.repository.CrudRepository;
 
 /**

@@ -1,6 +1,6 @@
 package com.study.redis.config;
 
-import com.study.redis.subscribe.MessageSubscriber;
+import com.study.redis.pubsub.subscribe.MessageSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
@@ -50,5 +51,10 @@ public class RedisConfigurer {
         container.setTaskExecutor(Executors.newFixedThreadPool(4));
 
         return container;
+    }
+
+    @Bean
+    public ChannelTopic noticeTopic() {
+        return new ChannelTopic("topic:notice");
     }
 }

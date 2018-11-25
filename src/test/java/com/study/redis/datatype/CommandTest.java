@@ -1,7 +1,7 @@
 package com.study.redis.datatype;
 
-import com.study.redis.data.model.User;
-import com.study.redis.data.repository.UserRepository;
+import com.study.redis.datatype.model.User;
+import com.study.redis.datatype.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
