@@ -1,4 +1,4 @@
-package com.study.redis.notice;
+package com.study.redis.notice.controller;
 
 import com.study.redis.pubsub.publish.MessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;

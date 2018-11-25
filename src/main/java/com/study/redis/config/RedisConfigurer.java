@@ -44,13 +44,19 @@ public class RedisConfigurer {
     }
 
     @Bean
-    public RedisMessageListenerContainer redisContainer() {
-        final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+    public RedisMessageListenerContainer redisContainer(@Autowired MessageSubscriber messageSubscriber, @Autowired ChannelTopic noticeTopic) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+
         container.setConnectionFactory(redisConnectionFactory());
-        container.addMessageListener(messageSubscriber, messageSubscriber.getTopic());
+        container.addMessageListener(messageSubscriber, noticeTopic);
         container.setTaskExecutor(Executors.newFixedThreadPool(4));
 
         return container;
+    }
+
+    @Bean
+    public MessageSubscriber messageSubscriber() {
+        return new MessageSubscriber(noticeTopic());
     }
 
     @Bean
