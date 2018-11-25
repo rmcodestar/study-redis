@@ -13,8 +13,6 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 
-import java.util.concurrent.Executors;
-
 /**
  * Created by rmcodestar on 2018. 11. 12..
  */
@@ -44,12 +42,13 @@ public class RedisConfigurer {
     }
 
     @Bean
-    public RedisMessageListenerContainer redisContainer(@Autowired MessageSubscriber messageSubscriber, @Autowired ChannelTopic noticeTopic) {
+    public RedisMessageListenerContainer redisContainer(@Autowired RedisConnectionFactory redisConnectionFactory,
+                                                        @Autowired MessageSubscriber messageSubscriber,
+                                                        @Autowired ChannelTopic noticeTopic) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 
-        container.setConnectionFactory(redisConnectionFactory());
+        container.setConnectionFactory(redisConnectionFactory);
         container.addMessageListener(messageSubscriber, noticeTopic);
-        container.setTaskExecutor(Executors.newFixedThreadPool(4));
 
         return container;
     }
@@ -61,6 +60,6 @@ public class RedisConfigurer {
 
     @Bean
     public ChannelTopic noticeTopic() {
-        return new ChannelTopic("topic:notice");
+        return new ChannelTopic("topic.notice");
     }
 }
