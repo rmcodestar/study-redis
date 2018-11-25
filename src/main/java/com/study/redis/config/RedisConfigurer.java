@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,9 +26,6 @@ public class RedisConfigurer {
     @Value("${spring.redis.port}")
     private int redisPort;
 
-    @Autowired
-    private MessageSubscriber messageSubscriber;
-
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(redisHost, redisPort);
@@ -35,26 +33,28 @@ public class RedisConfigurer {
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
-        final RedisTemplate<String, Object> template = new RedisTemplate<>();
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+
         template.setConnectionFactory(redisConnectionFactory());
         template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
+
         return template;
     }
 
     @Bean
     public RedisMessageListenerContainer redisContainer(@Autowired RedisConnectionFactory redisConnectionFactory,
-                                                        @Autowired MessageSubscriber messageSubscriber,
+                                                        @Autowired MessageListener noticeSubscriber,
                                                         @Autowired ChannelTopic noticeTopic) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 
         container.setConnectionFactory(redisConnectionFactory);
-        container.addMessageListener(messageSubscriber, noticeTopic);
+        container.addMessageListener(noticeSubscriber, noticeTopic);
 
         return container;
     }
 
     @Bean
-    public MessageSubscriber messageSubscriber() {
+    public MessageListener noticeSubscriber() {
         return new MessageSubscriber(noticeTopic());
     }
 
